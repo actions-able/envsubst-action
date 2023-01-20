@@ -1,0 +1,71 @@
+= Envsubst Gthub Action
+
+This action substitute the values of environment variables using envsubst. envsubst is a GNU gettext https://www.gnu.org/software/gettext/manual/html_node/envsubst-Invocation.html
+
+
+== Substitute envs in exactly one file
+
+[source,yaml]
+----
+      - uses: actions/checkout@v3
+        with:
+          fetch-depth: 0 # Alway 0 to be sure to fetch all your files
+
+      - name: Substitute env
+        uses: fhgbaguidi/envsubst@v1.0.0
+        with:
+          input-file: 'deployment.yaml'
+          output-file: 'new-deployment.yaml'
+        env:
+          IMAGE_NAME: 'my-custom-image:1.0.0'
+----
+
+== Substitute envs inf files using patterns for input files
+
+[source,yaml]
+----
+      - uses: actions/checkout@v3
+        with:
+          fetch-depth: 0 # Alway 0 to be sure to fetch all your files
+
+      - name: Substitute env
+        uses: fhgbaguidi/envsubst@v1.0.0
+        with:
+          input-file-pattern: '*.yaml'
+          output-file-suffix: '.subst'
+        IMAGE_NAME: 'my-custom-image:1.0.0'
+----
+
+With this last configuration, your output filename will be: `deployment.yaml.subst`.
+
+WARNING: Only one of `input-file` and `input-file-pattern` can be use at the time.
+
+== Parameters
+
+[cols="1,1,1",options="header"]
+|===
+|Name
+|Description
+|Default value
+
+|working-directory
+|The working directory of the action
+|.
+
+|input-file
+|Path to the input file. Needs `output-file` to be set if defined.
+|
+
+|output-file
+|Path to the output file. Needs `input-file` to be set if defined.
+|
+
+|input-file-pattern
+|Pattern of input files. Will be used with GNU `find -name`.
+|
+
+|output-file-suffix
+|Suffix that will be added to filenames for output files when using `input-file-pattern`.
+|`.subst`
+
+|===

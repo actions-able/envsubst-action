@@ -1,0 +1,34 @@
+# action.yml
+name: 'envsubst'
+description: 'Substitutes the values of environment variables'
+inputs:
+  working-directory:
+    description: 'Directory where to find the input file(s)'
+    required: true
+    default: '.'
+  input-file:
+    description: 'Path to the input file'
+    required: false
+  output-file:
+    description: 'Path to the output file'
+    required: false
+  input-file-pattern:
+    description: 'Pattern of input files. Will be used with GNU find -name'
+    required: false
+  output-file-suffix:
+    description: 'Suffix that will be added to filename for output files'
+    required: false
+    default: '.subst'
+branding:
+  color: blue
+  icon: file-text
+author: 'Fréjus GBAGUIDI'
+runs:
+  using: 'docker'
+  image: 'Dockerfile'
+  args:
+    - ${{ inputs.working-directory }}
+    - ${{ inputs.input-file }}
+    - ${{ inputs.output-file }}
+    - ${{ inputs.input-file-pattern }}
+    - ${{ inputs.output-file-suffix }}
