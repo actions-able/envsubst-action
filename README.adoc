@@ -1,4 +1,4 @@
-= Envsubst Gthub Action
+= Envsubst GitHub Action
 
 This action substitute the values of environment variables using envsubst. envsubst is a GNU gettext https://www.gnu.org/software/gettext/manual/html_node/envsubst-Invocation.html
 
@@ -9,7 +9,7 @@ This action substitute the values of environment variables using envsubst. envsu
 ----
       - uses: actions/checkout@v3
         with:
-          fetch-depth: 0 # Alway 0 to be sure to fetch all your files
+          fetch-depth: 0
 
       - name: Substitute env
         uses: fhgbaguidi/envsubst-action@v1.0.0
@@ -20,13 +20,13 @@ This action substitute the values of environment variables using envsubst. envsu
           IMAGE_NAME: 'my-custom-image:1.0.0'
 ----
 
-== Substitute envs inf files using patterns for input files
+== Substitute envs in files using patterns for input files
 
 [source,yaml]
 ----
       - uses: actions/checkout@v3
         with:
-          fetch-depth: 0 # Alway 0 to be sure to fetch all your files
+          fetch-depth: 0
 
       - name: Substitute env
         uses: fhgbaguidi/envsubst-action@v1.0.0
