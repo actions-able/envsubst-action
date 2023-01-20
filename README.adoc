@@ -12,7 +12,7 @@ This action substitute the values of environment variables using envsubst. envsu
           fetch-depth: 0 # Alway 0 to be sure to fetch all your files
 
       - name: Substitute env
-        uses: fhgbaguidi/envsubst@v1.0.0
+        uses: fhgbaguidi/envsubst-action@v1.0.0
         with:
           input-file: 'deployment.yaml'
           output-file: 'new-deployment.yaml'
@@ -29,7 +29,7 @@ This action substitute the values of environment variables using envsubst. envsu
           fetch-depth: 0 # Alway 0 to be sure to fetch all your files
 
       - name: Substitute env
-        uses: fhgbaguidi/envsubst@v1.0.0
+        uses: fhgbaguidi/envsubst-action@v1.0.0
         with:
           input-file-pattern: '*.yaml'
           output-file-suffix: '.subst'
