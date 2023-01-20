@@ -1,0 +1,80 @@
+name: build-and-test
+
+on:
+  push:
+    branches:
+      - main
+  pull_request:
+
+jobs:
+
+  docker-build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+
+      - name: docker-build
+        run: 'make docker-build'
+
+  test-action-with-input-file:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+    steps:
+      - uses: actions/checkout@v3
+        with:
+          fetch-depth: 0 # Alway 0 to be sure to fetch all your files
+
+      - name: Run envsubst
+        uses: ./
+        with:
+          working-directory: 'tests'
+          input-file: 'input.txt'
+          output-file: 'output.txt'
+        env:
+          FOO: 'world'
+
+      - name: display output
+        run: cat ./tests/output.txt
+
+      - name: test-file-content
+        run: '[[ "$(cat ./tests/output.txt)" = "Hello world" ]]'
+
+  test-action-with-input-pattern:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+    steps:
+      - uses: actions/checkout@v3
+        with:
+          fetch-depth: 0 # Alway 0 to be sure to fetch all your files
+
+      - name: Run envsubst
+        uses: ./
+        with:
+          working-directory: 'tests'
+          input-file-pattern: '*.txt'
+          output-file-suffix: '.out'
+        env:
+          FOO: 'world'
+
+      - name: display output
+        run: |
+          pwd
+          ls -l
+          ls -l tests
+          cat ./tests/input.txt.out
+
+      - name: test-file-content
+        run: '[[ "$(cat ./tests/input.txt.out)" = "Hello world" ]]'
+
+  test-entrypoint-script:
+    permissions:
+      contents: write
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+
+      - name: test-entrypoint
+        working-directory: tests
+        run: 'make tests'

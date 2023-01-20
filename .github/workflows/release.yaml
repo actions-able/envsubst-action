@@ -1,0 +1,41 @@
+name: release
+
+on:
+  workflow_dispatch:
+  push:
+    branches:
+      - main
+
+concurrency:
+  group: release-${{ github.ref }}
+
+jobs:
+  run:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+      issues: write
+      id-token: write
+      packages: write
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v3
+        with:
+          ref: ${{ github.ref }}
+
+      - name: Generate additional environment variables
+        uses: rlespinasse/github-slug-action@v4
+
+      - name: Generate release
+        id: generate_release
+        uses: cycjimmy/semantic-release-action@v3
+        with:
+          # Setup some additional plugins
+          extra_plugins: |
+            @semantic-release/changelog
+            @semantic-release/git
+            @semantic-release/exec
+          branches: |
+            ["${{ env.GITHUB_REF_NAME }}"]
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
