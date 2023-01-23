@@ -34,6 +34,18 @@ jobs:
         env:
           FOO: 'world'
 
+      - name: Run envsubst
+        uses: ./
+        with:
+          working-directory: 'kafka-connectors'
+          input-file-pattern: '*.json'
+          output-file-suffix: '.subst'
+        env:
+          FOO: 'world'
+
+      - name: display output
+        run: cat kafka-connectors/dbz-internal-referential-connector.json.subst
+
       - name: display output
         run: cat ./tests/output.txt
 

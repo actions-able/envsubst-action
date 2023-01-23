@@ -1,0 +1,32 @@
+{
+  "name": "dbz-internal-unified-product-sheets-connector",
+  "config": {
+    "connector.class": "io.debezium.connector.postgresql.PostgresConnector",
+    "tasks.max": "1",
+    "slot.name": "dbz_internal_unified_product_sheets_connector",
+    "database.dbname": "${DB_NAME}",
+    "database.hostname": "${DB_HOST}",
+    "database.port": "${DB_PORT}",
+    "database.user": "${DB_USER}",
+    "database.password": "${DB_PASSWORD}",
+    "key.converter": "org.apache.kafka.connect.json.JsonConverter",
+    "key.converter.schemas.enable": false,
+    "tombstones.on.delete": "false",
+    "topic.prefix": "dbz_internal_unified_product_sheets_connector",
+    "table.include.list": ".*(aggregated_product_sheet)",
+    "schema.history.internal.kafka.bootstrap.servers": "${KAFKA_BOOTSTRAP_SERVERS}",
+    "schema.history.internal.kafka.topic": "schemahistory.inventory",
+    "transforms": "AddPrefix,unwrap",
+    "transforms.AddPrefix.type": "org.apache.kafka.connect.transforms.RegexRouter",
+    "transforms.AddPrefix.regex": "(.*).aggregated_product_sheet",
+    "transforms.AddPrefix.replacement": "decathlon_onesuite_onecatalog_local_public_productSheets_v1_main_unified",
+    "transforms.unwrap.type": "io.debezium.transforms.ExtractNewRecordState",
+    "transforms.unwrap.drop.tombstones": false,
+    "transforms.unwrap.delete.handling.mode": "rewrite",
+    "transforms.unwrap.add.fields": "op,table,lsn",
+    "value.converter": "org.apache.kafka.connect.json.JsonConverter",
+    "value.converter.schemas.enable": false,
+    "errors.log.enable": "true",
+    "errors.log.include.messages": "true"
+  }
+}

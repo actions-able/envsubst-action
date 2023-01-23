@@ -1,0 +1,28 @@
+{
+  "name": "dbz-internal-referential-connector",
+  "config": {
+    "connector.class": "io.debezium.connector.postgresql.PostgresConnector",
+    "tasks.max": "1",
+    "slot.name": "dbz_internal_referential_connector",
+    "tombstones.on.delete": "false",
+    "database.dbname": "${DB_NAME}",
+    "database.hostname": "${DB_HOST}",
+    "database.port": "${DB_PORT}",
+    "database.user": "${DB_USER}",
+    "database.password": "${DB_PASSWORD}",
+    "key.converter": "org.apache.kafka.connect.json.JsonConverter",
+    "key.converter.schemas.enable": false,
+    "value.converter": "org.apache.kafka.connect.json.JsonConverter",
+    "value.converter.schemas.enable": false,
+    "topic.prefix": "cdc_input_tables",
+    "table.include.list": "public.(.*_input)",
+    "transforms": "Reroute",
+    "transforms.Reroute.type": "io.debezium.transforms.ByLogicalTableRouter",
+    "transforms.Reroute.topic.regex": "cdc_input_tables.public.(.*_input)",
+    "transforms.Reroute.topic.replacement": "decathlon_onesuite_onecatalog_local_internal_$1_v1",
+    "schema.history.internal.kafka.bootstrap.servers": "${KAFKA_BOOTSTRAP_SERVERS}",
+    "schema.history.internal.kafka.topic": "schemahistory.inventory",
+    "errors.log.enable": "true",
+    "errors.log.include.messages": "true"
+  }
+}

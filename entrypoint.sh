@@ -46,6 +46,16 @@ verbose "OUTPUT_FILE_SUFFIX=${OUTPUT_FILE_SUFFIX}"
 validate_inputs
 
 # Exec envsubst
+
+#if [ -d "${WORKING_DIRECTORY}" ]; then
+#  cd "${WORKING_DIRECTORY}"
+#else
+#  echo "ERROR: ${WORKING_DIRECTORY} directory not found." 1>&2
+#  exit 1
+#fi
+pwd
+ls -l "${WORKING_DIRECTORY}"
+
 if [ -n "${INPUT_FILE}" ] && [ -n "${OUTPUT_FILE}" ]; then
   if [ ! -f "${WORKING_DIRECTORY}/${INPUT_FILE}" ]; then
     echo "ERROR: ${WORKING_DIRECTORY}/${INPUT_FILE} file not found." 1>&2
@@ -53,10 +63,14 @@ if [ -n "${INPUT_FILE}" ] && [ -n "${OUTPUT_FILE}" ]; then
   fi
   verbose "Applying envsubst with file ${WORKING_DIRECTORY}/${INPUT_FILE}"
   envsubst <"${WORKING_DIRECTORY}/${INPUT_FILE}" >"${WORKING_DIRECTORY}/${OUTPUT_FILE}"
+  pwd
+  ls -l "${WORKING_DIRECTORY}"
   exit 0
 fi
 if [ -n "${INPUT_FILE_PATTERN}" ] && [ -n "${OUTPUT_FILE_SUFFIX}" ]; then
   verbose "Applying envsubst with pattern ${INPUT_FILE_PATTERN}"
   find "${WORKING_DIRECTORY}" -name "${INPUT_FILE_PATTERN}" -type f -exec sh -c 'envsubst < "${1}" > "${1}${2}"' shell '{}' "${OUTPUT_FILE_SUFFIX}" \;
+  pwd
+  ls -l "${WORKING_DIRECTORY}"
   exit 0
 fi
