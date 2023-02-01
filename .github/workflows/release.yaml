@@ -23,19 +23,6 @@ jobs:
         with:
           ref: ${{ github.ref }}
 
-      - name: Generate additional environment variables
-        uses: rlespinasse/github-slug-action@v4
-
-      - name: Generate release
-        id: generate_release
-        uses: cycjimmy/semantic-release-action@v3
+      - uses: rlespinasse/release-that@v1
         with:
-          # Setup some additional plugins
-          extra_plugins: |
-            @semantic-release/changelog
-            @semantic-release/git
-            @semantic-release/exec
-          branches: |
-            ["${{ env.GITHUB_REF_NAME }}"]
-        env:
-          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          github-token: ${{ secrets.GITHUB_TOKEN }}
