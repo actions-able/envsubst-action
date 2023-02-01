@@ -3,15 +3,15 @@
 # https://gist.github.com/mohanpedala/1e2ff5661761d3abd0385e8223e16425?permalink_comment_id=3945021
 #set -eo pipefail
 
-DEBUG=true
 WORKING_DIRECTORY=$1
 INPUT_FILE=$2
 OUTPUT_FILE=$3
 INPUT_FILE_PATTERN=$4
 OUTPUT_FILE_SUFFIX=$5
+DEBUG=$5
 
 verbose() {
-  if [ "${DEBUG}" = true ]; then
+  if [ "${DEBUG}" = 'true' ]; then
     echo "${1}"
   fi
 }

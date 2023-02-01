@@ -12,7 +12,7 @@ This action substitute the values of environment variables using envsubst. envsu
           fetch-depth: 0
 
       - name: Substitute env
-        uses: fhgbaguidi/envsubst-action@v1.0.0
+        uses: actions-able/envsubst-action@v1.0.1
         with:
           input-file: 'deployment.yaml'
           output-file: 'new-deployment.yaml'
@@ -29,7 +29,7 @@ This action substitute the values of environment variables using envsubst. envsu
           fetch-depth: 0
 
       - name: Substitute env
-        uses: fhgbaguidi/envsubst-action@v1.0.0
+        uses: actions-able/envsubst-action@v1.0.1
         with:
           input-file-pattern: '*.yaml'
           output-file-suffix: '.subst'
@@ -67,5 +67,9 @@ WARNING: Only one of `input-file` and `input-file-pattern` can be use at the tim
 |output-file-suffix
 |Suffix that will be added to filenames for output files when using `input-file-pattern`.
 |`.subst`
+
+|debug
+|Debug mode to have some logs.
+|`true`
 
 |===
