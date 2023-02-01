@@ -8,12 +8,9 @@ INPUT_FILE=$2
 OUTPUT_FILE=$3
 INPUT_FILE_PATTERN=$4
 OUTPUT_FILE_SUFFIX=$5
-DEBUG=$5
 
 verbose() {
-  if [ "${DEBUG}" = 'true' ]; then
-    echo "${1}"
-  fi
+  echo "::debug::${1}"
 }
 
 validate_inputs() {
@@ -21,7 +18,6 @@ validate_inputs() {
     echo "ERROR: You must define your 'working-directory'" 1>&2
     exit 1
   fi
-
   if [ -z "${INPUT_FILE}" ] && [ -z "${INPUT_FILE_PATTERN}" ]; then
     echo "ERROR: You must define one of 'input-file' or 'input-file-pattern' to use this utility" 1>&2
     exit 1
@@ -36,7 +32,6 @@ validate_inputs() {
   fi
 }
 
-verbose "DEBUG=${DEBUG}"
 verbose "WORKING_DIRECTORY=${WORKING_DIRECTORY}"
 verbose "INPUT_FILE=${INPUT_FILE}"
 verbose "OUTPUT_FILE=${OUTPUT_FILE}"

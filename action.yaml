@@ -19,10 +19,6 @@ inputs:
     description: 'Suffix that will be added to filename for output files'
     required: false
     default: '.subst'
-  debug:
-    description: 'Debug mode to see some logs.'
-    required: false
-    default: 'true'
 branding:
   color: blue
   icon: file-text
@@ -36,4 +32,3 @@ runs:
     - ${{ inputs.output-file }}
     - ${{ inputs.input-file-pattern }}
     - ${{ inputs.output-file-suffix }}
-    - ${{ inputs.debug }}
