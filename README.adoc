@@ -1,18 +1,18 @@
 = Envsubst GitHub Action
 
-This action substitute the values of environment variables using envsubst. envsubst is a GNU gettext https://www.gnu.org/software/gettext/manual/html_node/envsubst-Invocation.html
-
+This action substitute the values of environment variables using envsubst. 
+**envsubst** is a GNU gettext https://www.gnu.org/software/gettext/manual/html_node/envsubst-Invocation.html
 
 == Substitute envs in exactly one file
 
 [source,yaml]
 ----
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v4
         with:
           fetch-depth: 0
 
-      - name: Substitute env
-        uses: fhgbaguidi/envsubst-action@v1.0.0
+      - name: envsubst-gnu-utility
+        uses: actions-able/envsubst-action@v1
         with:
           input-file: 'deployment.yaml'
           output-file: 'new-deployment.yaml'
@@ -24,36 +24,36 @@ This action substitute the values of environment variables using envsubst. envsu
 
 [source,yaml]
 ----
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v4
         with:
           fetch-depth: 0
 
-      - name: Substitute env
-        uses: fhgbaguidi/envsubst-action@v1.0.0
+      - name: envsubst-gnu-utility
+        uses: actions-able/envsubst-action@v1
         with:
           input-file-pattern: '*.yaml'
           output-file-suffix: '.subst'
         IMAGE_NAME: 'my-custom-image:1.0.0'
 ----
 
-With this last configuration, your output filename will be: `deployment.yaml.subst`.
-
-WARNING: Only one of `input-file` and `input-file-pattern` can be use at the time.
+With this last configuration, your output filename will be `deployment.yaml.subst`.
 
 == Parameters
 
-[cols="1,1,1",options="header"]
+[cols="2a,6a,1a",options="header"]
 |===
 |Name
 |Description
 |Default value
 
 |working-directory
-|The working directory of the action
-|.
+|Directory where to find the input file(s)
+|`.`
 
 |input-file
 |Path to the input file. Needs `output-file` to be set if defined.
+
+WARNING: The parameter `input-file-pattern` can't be used at the time.
 |
 
 |output-file
@@ -62,6 +62,8 @@ WARNING: Only one of `input-file` and `input-file-pattern` can be use at the tim
 
 |input-file-pattern
 |Pattern of input files. Will be used with GNU `find -name`.
+
+WARNING: The parameter `input-file` can't be used at the time.
 |
 
 |output-file-suffix
