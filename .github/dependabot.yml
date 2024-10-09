@@ -2,6 +2,8 @@ version: 2
 updates:
   - package-ecosystem: 'docker'
     directory: '/'
+    commit-message:
+      prefix: 'feat: '
     schedule:
       interval: 'weekly'
     groups:
