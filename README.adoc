@@ -1,42 +1,61 @@
 = Envsubst GitHub Action
 
-This action substitute the values of environment variables using envsubst. 
-**envsubst** is a GNU gettext https://www.gnu.org/software/gettext/manual/html_node/envsubst-Invocation.html
+This GitHub Action substitutes the values of environment variables in your files using `envsubst`, a powerful utility from GNU gettext. It provides a flexible and efficient way to dynamically update configuration files, templates, and other text-based resources in your CI/CD pipeline.
 
-== Substitute envs in exactly one file
+== Why Use This Action?
+
+* *Simplify Configuration Management*: Easily update configuration files with environment-specific values without manual intervention.
+* *Enhance CI/CD Workflows*: Seamlessly integrate dynamic content substitution into your GitHub Actions pipelines.
+* *Flexible File Handling*: Process single files or multiple files using patterns, adapting to various project structures.
+* *Maintain Security*: Keep sensitive data in GitHub Secrets and inject them safely into your files during the CI/CD process.
+* *Reduce Human Error*: Automate the process of updating environment-specific values, minimizing the risk of manual mistakes.
+
+== Prerequisites
+
+* Your repository must be checked out using `actions/checkout@v4` or a similar action.
+* Familiarity with environment variables and GitHub Actions workflows.
+
+== Usage Examples
+
+=== Substitute envs in a single file
+
+This example demonstrates how to substitute environment variables in a specific file:
 
 [source,yaml]
 ----
-      - uses: actions/checkout@v4
-        with:
-          fetch-depth: 0
+- uses: actions/checkout@v4
+  with:
+    fetch-depth: 0
 
-      - name: envsubst-gnu-utility
-        uses: actions-able/envsubst-action@v1
-        with:
-          input-file: 'deployment.yaml'
-          output-file: 'new-deployment.yaml'
-        env:
-          IMAGE_NAME: 'my-custom-image:1.0.0'
+- name: Substitute environment variables
+  uses: actions-able/envsubst-action@v1
+  with:
+    input-file: 'deployment.yaml'
+    output-file: 'new-deployment.yaml'
+  env:
+    IMAGE_NAME: 'my-custom-image:1.0.0'
 ----
 
-== Substitute envs in files using patterns for input files
+=== Substitute envs in multiple files using patterns
+
+This example shows how to process multiple files matching a specific pattern:
 
 [source,yaml]
 ----
-      - uses: actions/checkout@v4
-        with:
-          fetch-depth: 0
+- uses: actions/checkout@v4
+  with:
+    fetch-depth: 0
 
-      - name: envsubst-gnu-utility
-        uses: actions-able/envsubst-action@v1
-        with:
-          input-file-pattern: '*.yaml'
-          output-file-suffix: '.subst'
-        IMAGE_NAME: 'my-custom-image:1.0.0'
+- name: Substitute environment variables in multiple files
+  uses: actions-able/envsubst-action@v1
+  with:
+    input-file-pattern: '*.yaml'
+    output-file-suffix: '.subst'
+  env:
+    IMAGE_NAME: 'my-custom-image:1.0.0'
 ----
 
-With this last configuration, your output filename will be `deployment.yaml.subst`.
+In this configuration, output filenames will have the `.subst` suffix (e.g., `deployment.yaml.subst`).
 
 == Parameters
 
@@ -51,23 +70,27 @@ With this last configuration, your output filename will be `deployment.yaml.subs
 |`.`
 
 |input-file
-|Path to the input file. Needs `output-file` to be set if defined.
+|Path to the input file. Requires `output-file` to be set if defined.
 
-WARNING: The parameter `input-file-pattern` can't be used at the time.
+NOTE: Cannot be used with `input-file-pattern`.
 |
 
 |output-file
-|Path to the output file. Needs `input-file` to be set if defined.
+|Path to the output file. Requires `input-file` to be set if defined.
 |
 
 |input-file-pattern
-|Pattern of input files. Will be used with GNU `find -name`.
+|Pattern of input files. Uses GNU `find -name` for file matching.
 
-WARNING: The parameter `input-file` can't be used at the time.
+NOTE: Cannot be used with `input-file`.
 |
 
 |output-file-suffix
-|Suffix that will be added to filenames for output files when using `input-file-pattern`.
+|Suffix added to filenames for output files when using `input-file-pattern`.
 |`.subst`
 
 |===
+
+== Additional Information
+
+For more details on `envsubst`, refer to the https://www.gnu.org/software/gettext/manual/html_node/envsubst-Invocation.html[GNU gettext documentation].
