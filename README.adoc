@@ -1,6 +1,7 @@
 = Envsubst GitHub Action
 
-This GitHub Action substitutes the values of environment variables in your files using `envsubst`, a powerful utility from GNU gettext. It provides a flexible and efficient way to dynamically update configuration files, templates, and other text-based resources in your CI/CD pipeline.
+This GitHub Action substitutes the values of environment variables in your files using `envsubst`, a powerful utility from GNU gettext.
+It provides a flexible and efficient way to dynamically update configuration files, templates, and other text-based resources in your CI/CD pipeline.
 
 == Why Use This Action?
 
