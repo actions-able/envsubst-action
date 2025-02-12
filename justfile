@@ -12,6 +12,6 @@ docker-build:
 
 # Generate site for production
 [group('Development mode')]
-test:
+tests:
 	cd tests/ && ./tests.sh
 	
