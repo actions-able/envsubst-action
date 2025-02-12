@@ -15,8 +15,10 @@ jobs:
     steps:
       - uses: actions/checkout@v4
 
+      - uses: taiki-e/install-action@just
+
       - name: docker-build
-        run: "make docker-build"
+        run: just docker-build
 
   test-action-with-input-file:
     runs-on: ubuntu-latest
@@ -38,9 +40,11 @@ jobs:
 
       - name: display output
         run: cat ./tests/output.txt
+        shell: bash
 
       - name: test-file-content
         run: '[[ "$(cat ./tests/output.txt)" = "Hello world" ]]'
+        shell: bash
 
   test-action-with-input-pattern:
     runs-on: ubuntu-latest
@@ -66,9 +70,11 @@ jobs:
           ls -l
           ls -l tests
           cat ./tests/input.txt.out
+        shell: bash
 
       - name: test-file-content
         run: '[[ "$(cat ./tests/input.txt.out)" = "Hello world" ]]'
+        shell: bash
 
   test-entrypoint-script:
     runs-on: ubuntu-latest
@@ -77,9 +83,11 @@ jobs:
     steps:
       - uses: actions/checkout@v4
 
+      - uses: taiki-e/install-action@just
+
       - name: test-entrypoint
-        working-directory: tests
-        run: "make tests"
+        run: just tests
+        shell: bash
 
   release:
     runs-on: ubuntu-latest
