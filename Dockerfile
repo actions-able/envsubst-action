@@ -1,6 +1,6 @@
 #checkov:skip=CKV_DOCKER_2
 #checkov:skip=CKV_DOCKER_3
-FROM alpine:3.21
+FROM alpine:3.22
 
 RUN apk add --update --no-cache gettext=0.22.5-r0
 
