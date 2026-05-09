@@ -90,26 +90,43 @@ jobs:
         shell: bash
 
   release:
+    if: github.event_name == 'push' && github.ref == 'refs/heads/main'
     runs-on: ubuntu-latest
     concurrency:
       group: release-${{ github.ref }}-${{ github.event_name }}
     permissions:
       contents: write
-      issues: write
-      id-token: write
-      packages: write
+      pull-requests: write
     needs:
       - docker-build
       - test-action-with-input-file
       - test-action-with-input-pattern
       - test-entrypoint-script
     steps:
+      - name: Run release-please
+        id: release
+        uses: googleapis/release-please-action@v4
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+          config-file: .github/release-please-config.json
+          manifest-file: .github/.release-please-manifest.json
+
       - name: Checkout repository
+        if: ${{ steps.release.outputs.release_created == 'true' }}
         uses: actions/checkout@v4
         with:
-          ref: ${{ github.ref }}
+          fetch-depth: 0
 
-      - name: Release this GitHub Action
-        uses: rlespinasse/release-that@v1
-        with:
-          github-token: ${{ secrets.GITHUB_TOKEN }}
+      - name: Update major and minor version tags
+        if: ${{ steps.release.outputs.release_created == 'true' }}
+        env:
+          MAJOR: ${{ steps.release.outputs.major }}
+          MINOR: ${{ steps.release.outputs.minor }}
+          TAG: ${{ steps.release.outputs.tag_name }}
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git tag -f "v${MAJOR}" "${TAG}"
+          git tag -f "v${MAJOR}.${MINOR}" "${TAG}"
+          git push origin "v${MAJOR}" --force
+          git push origin "v${MAJOR}.${MINOR}" --force
